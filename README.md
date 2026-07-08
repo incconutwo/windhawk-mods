@@ -1,31 +1,51 @@
-# Windhawk Mods
+# ForgeSync
 
-The official collection of Windhawk mods. The mods can be viewed on the [online mods catalog](https://windhawk.net/mods), and can be viewed and installed with [Windhawk](https://windhawk.net/).
+**ForgeSync** is a powerful desktop application that intelligently merges AI code generation with robust GitHub branch synchronization. It bridges the gap between conversational AI and local code management, allowing developers to safely evaluate, merge, and commit AI modifications directly into their local repository trees via visual diff views.
 
-## Discussing Mods
+![ForgeSync GUI Placeholder](icon.png)
 
-You're welcome to participate in [GitHub Discussions](https://github.com/ramensoftware/windhawk-mods/discussions) or join [the Discord channel](https://discord.com/servers/windhawk-923944342991818753) for a live discussion.
+## ⚡ Features
+* **AI Branch Merging:** Use Google's Gemini models to handle complex Git conflicts intelligently. 
+* **Streaming AI Diffs:** Watch your code get synthesized in an interactive, side-by-side diff overlay before committing anything locally.
+* **Smart GitHub Synchronization:** Pull remote files quickly with multi-threaded downloading and safely overwrite local scopes while explicitly preserving binary files (image data).
+* **Multi-Tool Suite:** Includes an AI-powered mass file extension renamer, folder comparator, and an intelligent resizing matrix for generating image variants optimized for social media or application bundles.
+* **Offline-Ready:** Your project configuration isn't locked down inside cloud databases; your local `forgesync_settings.json` serves exclusively as the single source of truth alongside hardened system keyring bindings for API credentials. 
 
-## Creating a New Mod
+## 🛠️ Installation
 
-Please refer to the corresponding wiki page: [Creating a New Mod](https://github.com/ramensoftware/windhawk/wiki/creating-a-new-mod).
+**Running the Source**
 
-## Submitting a New Mod
+ForgeSync relies on `customtkinter` for its dark-mode-first aesthetic and `PyGithub`/`google-genai` for infrastructure parsing.
 
-Submit a new mod by creating a pull request in this repository. The pull request must consist of a single file, `mods/<mod-id>.wh.cpp`, where `<mod-id>` is the mod id as specified in the mod file.
+1. Clone the repository
+   ```sh
+   git clone https://github.com/yourusername/ForgeSync.git
+   cd ForgeSync
+   ```
 
-The mod's `github` metadata value must be specified, and must match the pull request author's GitHub profile.
+2. Install the necessary Python packages
+   ```sh
+   pip install -r requirements.txt
+   ```
 
-If the mod's `twitter` metadata value is specified, the mod author must be the owner of the Twitter profile and must be able to verify it.
+3. Launch the App
+   ```sh
+   python main.py
+   ```
+*(Alternatively, simply run the compiled `.exe` executable available in the Releases tab.)*
 
-Mods which don't specify a license are submitted under [the MIT license](https://opensource.org/licenses/MIT). It's the author's responsibility to specify the appropriate license for third-party code.
+## 🔑 Getting Started (Settings)
+When you first open ForgeSync, navigate to the **⚙️ Settings** tab.
+1. Enter your **Google Gemini API Key**.
+2. Enter your **GitHub Personal Access Token** (This token requires remote repository viewing/branch creation permissions).
+3. Select your preferred Gemini AI Model.
 
-## Submitting a Mod Update
+Everything is securely managed safely through your operating system's native OS credential keyring via Python's `keyring` package. 
 
-Submit a mod update by creating a pull request in this repository. The pull request must consist of changes to a single file, `mods/<mod-id>.wh.cpp`, where `<mod-id>` is the mod id.
+## 🛠️ Technology Stack
+* **UI/UX:** CustomTkinter + Pygments
+* **AI:** Google GenAI SDK (Gemini Flash & Pro Contexts)
+* **API Hooks:** PyGithub
+* **Concurrency:** Native `threading` mixed with decoupled Task Pools
 
-The mod's `version` metadata value must be changed to a newer version.
-
-The mod's `github` metadata value must match the pull request author's GitHub profile. This means that you can only submit an update for a mod that you originally submitted. If you'd like to update a mod that you didn't submit, you can either submit the changes to the mod author, or submit a new mod instead.
-
-The commit message should include information about the new version. The information will be shown in the mod's changelog.
+---
