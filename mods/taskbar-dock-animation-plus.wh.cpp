@@ -386,7 +386,28 @@ HMODULE GetTaskbarViewModuleHandle();
 bool HookTaskbarViewDllSymbols(HMODULE module);
 static bool RebaseIconGeometryFast(DockAnimationContext& ctx);
 
+bool IsTrayWindow(HWND hWnd) {
+    WCHAR className[32];
+    return hWnd && GetClassName(hWnd, className, ARRAYSIZE(className)) &&
+           (_wcsicmp(className, L"Shell_TrayWnd") == 0 ||
+            _wcsicmp(className, L"Shell_SecondaryTrayWnd") == 0);
+}
+
+// The taskbar window of the context being set up or updated. All taskbars run
+// on the primary taskbar's thread, so the thread can't tell them apart: every
+// context would get the primary taskbar, and with it the primary taskbar's
+// edge. Contexts are created and updated from the pointer events of their own
+// taskbar, so the taskbar under the pointer is the right one.
 HWND GetCurrentThreadTrayWindow() {
+    POINT ptCursor;
+    if (GetCursorPos(&ptCursor)) {
+        HWND hUnder = WindowFromPoint(ptCursor);
+        HWND hRoot = hUnder ? GetAncestor(hUnder, GA_ROOT) : nullptr;
+        if (IsTrayWindow(hRoot)) {
+            return hRoot;
+        }
+    }
+
     DWORD currentThreadId = GetCurrentThreadId();
     HWND hPrimary = FindWindow(L"Shell_TrayWnd", NULL);
     if (hPrimary && GetWindowThreadProcessId(hPrimary, nullptr) == currentThreadId) {
